@@ -1,6 +1,7 @@
 package esporthub;
 
 import esporthub.login.*;
+import esporthub.dashboard.AdminDashboard;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -16,7 +17,7 @@ public class App extends Application {
     private static final String LOGIN_SUBTITLE = "Platform Manajemen\nTurnamen Esports #1";
     private static final String REGISTER_SUBTITLE = "Bergabung & Jadilah\nBagian dari Komunitas";
 
-    // Application window dimensions
+    // Application window dimensions (Login/Register)
     private static final int WIDTH = 980;
     private static final int HEIGHT = 620;
 
@@ -30,8 +31,11 @@ public class App extends Application {
     private LoginForm loginForm;
     private RegisterForm registerForm;
 
+    private Stage mainStage;
+
     @Override
     public void start(Stage primaryStage) {
+        this.mainStage = primaryStage;
         authManager = new AuthManager();
 
         // The root container is bright and white
@@ -82,8 +86,14 @@ public class App extends Application {
                 }
 
                 if (authManager.authenticate(username, password)) {
-                    String role = username.equalsIgnoreCase("admin") ? "Admin" : "Player";
-                    loginForm.showAlert("Login Berhasil sebagai " + role + "!", true);
+                    if (username.equalsIgnoreCase("admin")) {
+                        loginForm.showAlert("Login Berhasil! Mengalihkan...", true);
+                        
+                        // Instantly swap scene to Admin Dashboard without animation
+                        showAdminDashboard();
+                    } else {
+                        loginForm.showAlert("Login Berhasil sebagai Player!", true);
+                    }
                 } else {
                     loginForm.showAlert("Username atau Password salah!", false);
                 }
@@ -139,8 +149,7 @@ public class App extends Application {
         ParallelTransition fadeOutAll = new ParallelTransition(fadeOutCurrent, fadeOutLeft);
         fadeOutAll.setOnFinished(e -> {
             // Update window title dynamically
-            Stage stage = (Stage) rootContainer.getScene().getWindow();
-            stage.setTitle(isTrophy ? "EsportHub - Daftar Akun" : "EsportHub - Login");
+            mainStage.setTitle(isTrophy ? "EsportHub - Daftar Akun" : "EsportHub - Login");
 
             currentPane.setVisible(false);
             currentPane.setManaged(false);
@@ -171,6 +180,27 @@ public class App extends Application {
         });
 
         fadeOutAll.play();
+    }
+
+    /**
+     * Instantly shows the Admin Dashboard and resizes stage.
+     */
+    private void showAdminDashboard() {
+        loginForm.clearInputs();
+        registerForm.clearInputs();
+
+        AdminDashboard dashboard = new AdminDashboard(() -> {
+            // Logout callback - transition back to Login
+            Scene loginScene = new Scene(rootContainer, WIDTH, HEIGHT);
+            mainStage.setTitle("EsportHub - Login");
+            mainStage.setScene(loginScene);
+            mainStage.centerOnScreen();
+        });
+
+        Scene dashScene = new Scene(dashboard, 1000, 680);
+        mainStage.setTitle("EsportHub - Dashboard Admin");
+        mainStage.setScene(dashScene);
+        mainStage.centerOnScreen();
     }
 
     public static void main(String[] args) {
