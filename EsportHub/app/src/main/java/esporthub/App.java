@@ -40,6 +40,18 @@ public class App extends Application {
         this.mainStage = primaryStage;
         authManager = new AuthManager();
 
+        buildLoginScene();
+
+        primaryStage.setTitle("EsportHub - Login");
+        primaryStage.setResizable(false);
+        primaryStage.show();
+    }
+
+    /**
+     * Builds (or rebuilds) the entire login/register UI and sets it as the active scene.
+     * This is called on startup and on logout to avoid node reuse across scenes.
+     */
+    private void buildLoginScene() {
         // The root container is bright and white
         rootContainer = new StackPane();
         rootContainer.setStyle("-fx-background-color: #FFFFFF;");
@@ -66,10 +78,10 @@ public class App extends Application {
         // Scene is set exactly to the size of the cards for a bright, borderless appearance
         Scene scene = new Scene(rootContainer, WIDTH, HEIGHT);
 
-        primaryStage.setTitle("EsportHub - Login");
-        primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
-        primaryStage.show();
+        mainStage.setTitle("EsportHub - Login");
+        mainStage.setScene(scene);
+        mainStage.setResizable(false);
+        mainStage.centerOnScreen();
     }
 
     /**
@@ -196,15 +208,9 @@ public class App extends Application {
      * Instantly shows the Admin Dashboard and resizes stage.
      */
     private void showAdminDashboard() {
-        loginForm.clearInputs();
-        registerForm.clearInputs();
-
         AdminDashboard dashboard = new AdminDashboard(() -> {
-            // Logout callback - transition back to Login
-            Scene loginScene = new Scene(rootContainer, WIDTH, HEIGHT);
-            mainStage.setTitle("EsportHub - Login");
-            mainStage.setScene(loginScene);
-            mainStage.centerOnScreen();
+            // Logout callback - rebuild login UI from scratch
+            buildLoginScene();
         });
 
         Scene dashScene = new Scene(dashboard, 1000, 680);
@@ -217,9 +223,6 @@ public class App extends Application {
      * Instantly shows the Player Dashboard and resizes stage.
      */
     private void showPlayerDashboard(String username) {
-        loginForm.clearInputs();
-        registerForm.clearInputs();
-
         // Find or dynamically create Player in DataStore
         DataStore dataStore = DataStore.getInstance();
         Player loggedInPlayer = null;
@@ -240,11 +243,8 @@ public class App extends Application {
         Player finalPlayer = loggedInPlayer;
 
         PlayerDashboard dashboard = new PlayerDashboard(finalPlayer, authManager, () -> {
-            // Logout callback - transition back to Login
-            Scene loginScene = new Scene(rootContainer, WIDTH, HEIGHT);
-            mainStage.setTitle("EsportHub - Login");
-            mainStage.setScene(loginScene);
-            mainStage.centerOnScreen();
+            // Logout callback - rebuild login UI from scratch
+            buildLoginScene();
         });
 
         Scene dashScene = new Scene(dashboard, 1000, 680);

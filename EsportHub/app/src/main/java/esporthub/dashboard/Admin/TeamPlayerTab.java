@@ -122,6 +122,8 @@ public class TeamPlayerTab extends HBox {
             new SimpleStringProperty(f.getValue().isBanned() ? "Banned" : "Aktif"));
         statusCol.setPrefWidth(100);
 
+        teamTable.getColumns().addAll(nameCol, winsCol, lossesCol, statusCol);
+
         teamTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {
                 playerTable.getSelectionModel().clearSelection();
@@ -149,6 +151,8 @@ public class TeamPlayerTab extends HBox {
         statusCol.setCellValueFactory(f ->
             new SimpleStringProperty(f.getValue().isBanned() ? "Banned" : "Aktif"));
         statusCol.setPrefWidth(100);
+
+        playerTable.getColumns().addAll(nameCol, roleCol, teamCol, statusCol);
 
         playerTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null) {

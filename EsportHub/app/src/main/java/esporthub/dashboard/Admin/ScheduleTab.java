@@ -95,7 +95,7 @@ public class ScheduleTab extends HBox {
         winnerCol.setCellValueFactory(f -> f.getValue().winnerProperty());
         winnerCol.setPrefWidth(120);
 
-        
+        matchTable.getColumns().addAll(matchUpCol, dateCol, statusCol, scoreCol, winnerCol);
 
         matchTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, newSel) -> {
             if (newSel != null && "Scheduled".equalsIgnoreCase(newSel.getStatus())) {

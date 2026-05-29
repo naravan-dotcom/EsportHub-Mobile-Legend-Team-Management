@@ -1,6 +1,7 @@
 package esporthub.dashboard.player;
 
 import esporthub.model.Player;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
@@ -66,33 +67,73 @@ public class KdaChartCard extends VBox {
 
         areaChart.getData().add(series);
 
-        // Styling the chart elements using lookup or direct stylesheets if needed
-        // For standard JavaFX, applying styling inline:
+        // Apply inline styling for the chart
         areaChart.setStyle("-fx-background-color: transparent;");
         areaChart.setHorizontalGridLinesVisible(true);
         areaChart.setVerticalGridLinesVisible(false);
         
-        // Load custom styling for AreaChart via stylesheet or lookup
-        // We will inject a custom inline stylesheet string to customize the area chart stroke and gradient fill
-        String chartCss = 
-            ".chart-plot-background { -fx-background-color: transparent; }\n" +
-            ".chart-vertical-grid-lines { -fx-stroke: transparent; }\n" +
-            ".chart-horizontal-grid-lines { -fx-stroke: #F3F4F6; }\n" +
-            ".chart-series-area-line { -fx-stroke: #4F46E5; -fx-stroke-width: 3px; }\n" +
-            ".chart-series-area-fill { -fx-fill: linear-gradient(to bottom, rgba(79, 70, 229, 0.3) 0%, rgba(79, 70, 229, 0.0) 100%); }\n" +
-            ".chart-line-symbol { -fx-background-color: #4F46E5, #FFFFFF; -fx-background-insets: 0, 2; -fx-background-radius: 5px; -fx-padding: 5px; }\n" +
-            ".axis { -fx-tick-label-fill: #6B7280; -fx-font-family: 'Inter'; -fx-font-size: 11px; }\n" +
-            ".axis-label { -fx-text-fill: #4B5563; -fx-font-family: 'Inter'; -fx-font-size: 11px; -fx-font-weight: bold; }";
-            
-        try {
-            java.io.File cssFile = new java.io.File("chart-styles.css");
-            java.nio.file.Files.write(cssFile.toPath(), chartCss.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            areaChart.getStylesheets().add(cssFile.toURI().toString());
-        } catch (Exception e) {
-            System.err.println("Gagal memuat stylesheet grafik: " + e.getMessage());
-        }
+        // Apply programmatic styling via node lookup after the chart is rendered
+        applyChartStyling();
 
         this.getChildren().add(areaChart);
+    }
+
+    /**
+     * Applies styling to chart sub-nodes using Platform.runLater()
+     * so that nodes are available for lookup after the CSS pass.
+     * This replaces the external CSS file approach.
+     */
+    private void applyChartStyling() {
+        Platform.runLater(() -> {
+            // Style the plot background
+            javafx.scene.Node plotBg = areaChart.lookup(".chart-plot-background");
+            if (plotBg != null) {
+                plotBg.setStyle("-fx-background-color: transparent;");
+            }
+
+            // Style the vertical grid lines
+            javafx.scene.Node vertLines = areaChart.lookup(".chart-vertical-grid-lines");
+            if (vertLines != null) {
+                vertLines.setStyle("-fx-stroke: transparent;");
+            }
+
+            // Style the horizontal grid lines
+            javafx.scene.Node horizLines = areaChart.lookup(".chart-horizontal-grid-lines");
+            if (horizLines != null) {
+                horizLines.setStyle("-fx-stroke: #F3F4F6;");
+            }
+
+            // Style the series area line
+            javafx.scene.Node areaLine = areaChart.lookup(".chart-series-area-line");
+            if (areaLine != null) {
+                areaLine.setStyle("-fx-stroke: #4F46E5; -fx-stroke-width: 3px;");
+            }
+            javafx.scene.Node seriesLine = areaChart.lookup(".chart-series-line");
+            if (seriesLine != null) {
+                seriesLine.setStyle("-fx-stroke: #4F46E5; -fx-stroke-width: 3px;");
+            }
+
+            // Style the series area fill
+            javafx.scene.Node areaFill = areaChart.lookup(".chart-series-area-fill");
+            if (areaFill != null) {
+                areaFill.setStyle("-fx-fill: linear-gradient(to bottom, rgba(79, 70, 229, 0.3) 0%, rgba(79, 70, 229, 0.0) 100%);");
+            }
+
+            // Style data point symbols
+            for (javafx.scene.Node symbol : areaChart.lookupAll(".chart-line-symbol")) {
+                symbol.setStyle("-fx-background-color: #4F46E5, #FFFFFF; -fx-background-insets: 0, 2; -fx-background-radius: 5px; -fx-padding: 5px;");
+            }
+
+            // Style axes
+            for (javafx.scene.Node axis : areaChart.lookupAll(".axis")) {
+                axis.setStyle("-fx-tick-label-fill: #6B7280; -fx-font-family: 'Inter'; -fx-font-size: 11px;");
+            }
+
+            // Style axis labels
+            for (javafx.scene.Node axisLabel : areaChart.lookupAll(".axis-label")) {
+                axisLabel.setStyle("-fx-text-fill: #4B5563; -fx-font-family: 'Inter'; -fx-font-size: 11px; -fx-font-weight: bold;");
+            }
+        });
     }
 
     public void refresh() {
@@ -103,5 +144,6 @@ public class KdaChartCard extends VBox {
             series.getData().add(new XYChart.Data<>("M" + (i + 1), timeline.get(i)));
         }
         areaChart.getData().add(series);
+        applyChartStyling();
     }
 }
