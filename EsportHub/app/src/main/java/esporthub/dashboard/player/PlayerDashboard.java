@@ -46,6 +46,13 @@ public class PlayerDashboard extends BorderPane {
         this.setPrefSize(1000, 680);
         this.setStyle("-fx-background-color: #F8FAFC;"); // Modern soft slate gray background
 
+        // 2. Scrollable Content Area (Center) - Initialized early to avoid definite assignment compilation issues in lambdas
+        contentScrollPane = new ScrollPane();
+        contentScrollPane.setFitToWidth(true);
+        contentScrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;");
+        contentScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        contentScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
         // 1. Sidebar Navigation (Left - Deep Slate Navy style)
         sidebar = new VBox(20);
         sidebar.setPrefWidth(240);
@@ -154,13 +161,6 @@ public class PlayerDashboard extends BorderPane {
 
         sidebar.getChildren().addAll(brandBox, separator, playerInfoBox, menuBtn, teamRoomBtn, spacer, logoutBtn);
         this.setLeft(sidebar);
-
-        // 2. Scrollable Content Area (Center)
-        contentScrollPane = new ScrollPane();
-        contentScrollPane.setFitToWidth(true);
-        contentScrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;");
-        contentScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        contentScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         
         this.setCenter(contentScrollPane);
 

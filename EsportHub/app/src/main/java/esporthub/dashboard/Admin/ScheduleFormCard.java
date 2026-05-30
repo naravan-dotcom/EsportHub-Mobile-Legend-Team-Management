@@ -77,6 +77,19 @@ public class ScheduleFormCard extends VBox {
         team2Combo.setItems(activeTeams);
     }
 
+    private boolean isValidDateTimeFormat(String dt) {
+        if (dt == null || !dt.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$")) {
+            return false;
+        }
+        try {
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            java.time.LocalDateTime.parse(dt, formatter);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void handleScheduleMatch() {
         Team t1 = team1Combo.getValue();
         Team t2 = team2Combo.getValue();
@@ -96,6 +109,12 @@ public class ScheduleFormCard extends VBox {
 
         if (dt.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Silakan masukkan tanggal & waktu tanding!", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+
+        if (!isValidDateTimeFormat(dt)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Format tanggal & waktu salah! Gunakan format YYYY-MM-DD HH:MM (contoh: 2026-05-30 18:00)", ButtonType.OK);
             alert.showAndWait();
             return;
         }

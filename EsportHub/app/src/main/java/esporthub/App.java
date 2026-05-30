@@ -133,6 +133,23 @@ public class App extends Application {
                     return;
                 }
 
+                if (password.length() < 6) {
+                    registerForm.showAlert("Password minimal harus 6 karakter!", false);
+                    return;
+                }
+
+                boolean hasLetter = false;
+                boolean hasDigit = false;
+                for (char c : password.toCharArray()) {
+                    if (Character.isLetter(c)) hasLetter = true;
+                    if (Character.isDigit(c)) hasDigit = true;
+                }
+
+                if (!hasLetter || !hasDigit) {
+                    registerForm.showAlert("Password harus mengandung huruf dan angka!", false);
+                    return;
+                }
+
                 if (authManager.exists(username)) {
                     registerForm.showAlert("Username sudah terdaftar!", false);
                 } else {

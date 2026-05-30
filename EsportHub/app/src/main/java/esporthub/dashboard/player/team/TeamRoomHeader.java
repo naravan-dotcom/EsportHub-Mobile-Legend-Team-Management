@@ -73,7 +73,16 @@ public class TeamRoomHeader extends HBox {
             editBtn.setOnMouseEntered(e -> editBtn.setStyle("-fx-background-color: rgba(255,255,255,0.25); -fx-text-fill: #FFFFFF; -fx-padding: 4px 8px; -fx-background-radius: 6px; -fx-font-weight: bold;"));
             editBtn.setOnMouseExited(e -> editBtn.setStyle("-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: #F1F5F9; -fx-padding: 4px 8px; -fx-background-radius: 6px; -fx-font-weight: bold;"));
             editBtn.setOnAction(e -> handleEditTeamName());
-            nameRow.getChildren().add(editBtn);
+
+            Button settingBtn = new Button("Pengaturan Tim");
+            settingBtn.setFont(Font.font("Inter", FontWeight.BOLD, 10));
+            settingBtn.setStyle("-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: #F1F5F9; -fx-padding: 4px 8px; -fx-background-radius: 6px; -fx-font-weight: bold;");
+            settingBtn.setCursor(Cursor.HAND);
+            settingBtn.setOnMouseEntered(e -> settingBtn.setStyle("-fx-background-color: rgba(255,255,255,0.25); -fx-text-fill: #FFFFFF; -fx-padding: 4px 8px; -fx-background-radius: 6px; -fx-font-weight: bold;"));
+            settingBtn.setOnMouseExited(e -> settingBtn.setStyle("-fx-background-color: rgba(255,255,255,0.15); -fx-text-fill: #F1F5F9; -fx-padding: 4px 8px; -fx-background-radius: 6px; -fx-font-weight: bold;"));
+            settingBtn.setOnAction(e -> handleEditTeamSettings());
+
+            nameRow.getChildren().addAll(editBtn, settingBtn);
         }
 
         captainLabel = new Label("Ketua: " + (team.getCaptainName().isEmpty() ? "-" : team.getCaptainName()));
@@ -84,7 +93,15 @@ public class TeamRoomHeader extends HBox {
         recordLabel.setFont(Font.font("Inter", FontWeight.BOLD, 12));
         recordLabel.setStyle("-fx-text-fill: #34D399; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px;");
 
-        HBox metaRow = new HBox(16, captainLabel, recordLabel);
+        Label privacyLabel = new Label("Akses: " + team.getPrivacyType());
+        privacyLabel.setFont(Font.font("Inter", FontWeight.BOLD, 12));
+        if (team.getPrivacyType().equalsIgnoreCase("Public")) {
+            privacyLabel.setStyle("-fx-text-fill: #38BDF8; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px;");
+        } else {
+            privacyLabel.setStyle("-fx-text-fill: #FB7185; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px;");
+        }
+
+        HBox metaRow = new HBox(16, captainLabel, recordLabel, privacyLabel);
         metaRow.setAlignment(Pos.CENTER_LEFT);
 
         infoBox.getChildren().addAll(nameRow, metaRow);
@@ -99,6 +116,28 @@ public class TeamRoomHeader extends HBox {
         leaveBtn.setOnAction(e -> handleLeaveTeam());
 
         this.getChildren().addAll(teamAvatar, infoBox, leaveBtn);
+    }
+
+    private void handleEditTeamSettings() {
+        java.util.List<String> choices = new java.util.ArrayList<>();
+        choices.add("Public");
+        choices.add("Permission");
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(team.getPrivacyType(), choices);
+        dialog.setTitle("Pengaturan Privasi Tim");
+        dialog.setHeaderText("Pilih tipe pendaftaran untuk tim \"" + team.getName() + "\":");
+        dialog.setContentText("Tipe Pendaftaran:");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(type -> {
+            team.setPrivacyType(type);
+            if (type.equals("Public")) {
+                team.getJoinRequests().clear();
+            }
+            showAlert("Sukses", "Tipe pendaftaran tim berhasil diubah menjadi: " + type, Alert.AlertType.INFORMATION);
+            setupUI();
+            onDataChanged.run();
+        });
     }
 
     private void handleEditTeamName() {

@@ -1,6 +1,8 @@
 package esporthub.model;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class Team {
     private final StringProperty id;
@@ -9,6 +11,8 @@ public class Team {
     private final IntegerProperty losses;
     private final BooleanProperty banned;
     private final StringProperty captainName;
+    private final StringProperty privacyType;
+    private final ObservableList<String> joinRequests;
 
     public Team(String id, String name, int wins, int losses, boolean banned) {
         this.id = new SimpleStringProperty(id);
@@ -17,6 +21,8 @@ public class Team {
         this.losses = new SimpleIntegerProperty(losses);
         this.banned = new SimpleBooleanProperty(banned);
         this.captainName = new SimpleStringProperty("");
+        this.privacyType = new SimpleStringProperty("Public");
+        this.joinRequests = FXCollections.observableArrayList();
     }
 
     public String getId() { return id.get(); }
@@ -42,6 +48,12 @@ public class Team {
     public String getCaptainName() { return captainName.get(); }
     public void setCaptainName(String value) { captainName.set(value); }
     public StringProperty captainNameProperty() { return captainName; }
+
+    public String getPrivacyType() { return privacyType.get(); }
+    public void setPrivacyType(String value) { privacyType.set(value); }
+    public StringProperty privacyTypeProperty() { return privacyType; }
+
+    public ObservableList<String> getJoinRequests() { return joinRequests; }
 
     @Override
     public String toString() {

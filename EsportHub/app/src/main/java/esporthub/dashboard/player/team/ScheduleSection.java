@@ -202,6 +202,19 @@ public class ScheduleSection extends HBox {
         });
     }
 
+    private boolean isValidDateTimeFormat(String dt) {
+        if (dt == null || !dt.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}$")) {
+            return false;
+        }
+        try {
+            java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            java.time.LocalDateTime.parse(dt, formatter);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void handleAddSchedule() {
         String title = titleField.getText().trim();
         String dateTime = dateTimeField.getText().trim();
@@ -209,6 +222,11 @@ public class ScheduleSection extends HBox {
 
         if (title.isEmpty() || dateTime.isEmpty()) {
             showAlert("Error", "Materi latihan dan Tanggal/Jam harus diisi!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (!isValidDateTimeFormat(dateTime)) {
+            showAlert("Error", "Format tanggal & waktu salah! Gunakan format YYYY-MM-DD HH:MM (contoh: 2026-06-01 19:00)", Alert.AlertType.WARNING);
             return;
         }
 

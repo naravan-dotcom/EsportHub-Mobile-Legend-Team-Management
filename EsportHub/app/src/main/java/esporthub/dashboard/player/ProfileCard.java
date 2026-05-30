@@ -19,6 +19,7 @@ public class ProfileCard extends VBox {
     private final TextField usernameField;
     private final TextField emailField;
     private final ComboBox<String> roleCombo;
+    private final PasswordField passwordField;
     private final Label idLabel;
 
     public ProfileCard(Player player, AuthManager authManager, Runnable onProfileUpdated) {
@@ -69,7 +70,17 @@ public class ProfileCard extends VBox {
         setupComboStyle(roleCombo);
         VBox roleBox = createFieldContainer("Role / Posisi", roleCombo);
 
-        form.getChildren().addAll(idBox, usernameBox, emailBox, roleBox);
+        // Password (Editable)
+        String currentPassword = authManager.getPassword(player.getName());
+        if (currentPassword == null) {
+            currentPassword = "player123";
+        }
+        passwordField = new PasswordField();
+        passwordField.setText(currentPassword);
+        setupFieldStyle(passwordField, "Password Baru");
+        VBox passwordBox = createFieldContainer("Password Baru", passwordField);
+
+        form.getChildren().addAll(idBox, usernameBox, emailBox, roleBox, passwordBox);
 
         // Submit Button
         Button saveBtn = new Button("Simpan Perubahan");
@@ -115,9 +126,27 @@ public class ProfileCard extends VBox {
         String newName = usernameField.getText().trim();
         String newEmail = emailField.getText().trim();
         String newRole = roleCombo.getValue();
+        String newPassword = passwordField.getText();
 
-        if (newName.isEmpty() || newEmail.isEmpty() || newRole == null) {
+        if (newName.isEmpty() || newEmail.isEmpty() || newRole == null || newPassword.isEmpty()) {
             showAlert("Error", "Semua kolom editable harus diisi!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (newPassword.length() < 6) {
+            showAlert("Error", "Password minimal harus 6 karakter!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+        for (char c : newPassword.toCharArray()) {
+            if (Character.isLetter(c)) hasLetter = true;
+            if (Character.isDigit(c)) hasDigit = true;
+        }
+
+        if (!hasLetter || !hasDigit) {
+            showAlert("Error", "Password harus mengandung huruf dan angka!", Alert.AlertType.WARNING);
             return;
         }
 
@@ -131,6 +160,9 @@ public class ProfileCard extends VBox {
                 return;
             }
         }
+
+        // Update password in AuthManager
+        authManager.updatePassword(newName, newPassword);
 
         // Update team captain name if this player is the captain
         for (Team t : DataStore.getInstance().getTeams()) {

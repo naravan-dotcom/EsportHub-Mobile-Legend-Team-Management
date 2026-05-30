@@ -51,7 +51,26 @@ public class TeamRoomTab extends VBox {
         subtitleLabel.setFont(Font.font("Inter", 13));
         subtitleLabel.setStyle("-fx-text-fill: #64748B; -fx-font-family: 'Inter'; -fx-font-size: 13px;");
 
+        // Check if there are any pending requests
+        StringBuilder pendingText = new StringBuilder();
+        for (Team t : DataStore.getInstance().getTeams()) {
+            if (t.getJoinRequests().contains(currentPlayer.getName())) {
+                if (pendingText.length() > 0) pendingText.append(", ");
+                pendingText.append(t.getName());
+            }
+        }
+        
+        Label pendingLabel = null;
+        if (pendingText.length() > 0) {
+            pendingLabel = new Label("Permintaan bergabung tertunda di tim: " + pendingText.toString());
+            pendingLabel.setFont(Font.font("Inter", FontWeight.BOLD, 12));
+            pendingLabel.setStyle("-fx-text-fill: #D97706; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px;");
+        }
+
         VBox titleBox = new VBox(6, titleLabel, subtitleLabel);
+        if (pendingLabel != null) {
+            titleBox.getChildren().add(pendingLabel);
+        }
 
         // Grid for Join / Create choices
         GridPane grid = new GridPane();
@@ -104,10 +123,20 @@ public class TeamRoomTab extends VBox {
                 showAlert("Error", "Tim ini dalam status banned dan tidak bisa dimasuki!", Alert.AlertType.ERROR);
                 return;
             }
-            currentPlayer.setTeamName(selected.getName());
-            showAlert("Sukses", "Anda telah bergabung dengan tim " + selected.getName() + "!", Alert.AlertType.INFORMATION);
-            setupContent();
-            onDashboardRefresh.run();
+            if (selected.getPrivacyType() != null && selected.getPrivacyType().equalsIgnoreCase("Permission")) {
+                if (selected.getJoinRequests().contains(currentPlayer.getName())) {
+                    showAlert("Peringatan", "Anda sudah mengirimkan permintaan bergabung ke tim ini! Harap tunggu persetujuan Ketua Tim.", Alert.AlertType.WARNING);
+                } else {
+                    selected.getJoinRequests().add(currentPlayer.getName());
+                    showAlert("Permintaan Terkirim", "Permintaan bergabung telah dikirim ke Ketua Tim \"" + selected.getName() + "\". Harap tunggu persetujuan.", Alert.AlertType.INFORMATION);
+                    setupNoTeamView();
+                }
+            } else {
+                currentPlayer.setTeamName(selected.getName());
+                showAlert("Sukses", "Anda telah bergabung dengan tim " + selected.getName() + "!", Alert.AlertType.INFORMATION);
+                setupContent();
+                onDashboardRefresh.run();
+            }
         });
 
         joinCard.getChildren().addAll(joinTitle, joinDesc, teamCombo, joinBtn);
