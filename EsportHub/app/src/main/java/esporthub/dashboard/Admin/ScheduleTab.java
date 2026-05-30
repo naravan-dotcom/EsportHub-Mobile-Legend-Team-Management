@@ -18,28 +18,27 @@ public class ScheduleTab extends HBox {
     private final MatchResultCard matchResultCard;
 
     public ScheduleTab() {
-        this.setPadding(new Insets(20));
-        this.setSpacing(20);
-        this.setStyle("-fx-background-color: #FFFFFF;");
+        this.setPadding(new Insets(30));
+        this.setSpacing(24);
+        this.setStyle("-fx-background-color: transparent;");
 
         // 1. Left Panel (Match Schedule Table)
-        VBox leftPane = new VBox(15);
+        VBox leftPane = new VBox(20);
         HBox.setHgrow(leftPane, Priority.ALWAYS);
-        leftPane.setStyle("-fx-background-color: #FFFFFF;");
+        leftPane.setStyle("-fx-background-color: transparent;");
 
         Label sectionTitle = new Label("Jadwal & Hasil Pertandingan");
-        sectionTitle.setFont(Font.font("Inter", FontWeight.BOLD, 18));
-        sectionTitle.setTextFill(Color.web("#1F2937"));
+        sectionTitle.setFont(Font.font("Outfit", FontWeight.BOLD, 22));
+        sectionTitle.setStyle("-fx-text-fill: #0F172A; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 22px;");
 
         setupMatchTable();
         leftPane.getChildren().addAll(sectionTitle, matchTable);
 
-        // 2. Right Panel (Modular Form Cards)
-        VBox rightPane = new VBox(20);
+        // 2. Right Panel (Modular Form Cards Container)
+        VBox rightPane = new VBox(24);
         rightPane.setPrefWidth(380);
         rightPane.setMinWidth(380);
-        rightPane.setPadding(new Insets(15));
-        rightPane.setStyle("-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 8px; -fx-background-radius: 8px;");
+        rightPane.setStyle("-fx-background-color: transparent;");
 
         // Instantiate Match Result Card
         matchResultCard = new MatchResultCard(() -> {
@@ -65,7 +64,17 @@ public class ScheduleTab extends HBox {
         matchTable = new TableView<>();
         matchTable.setItems(dataStore.getMatches());
         matchTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        matchTable.setStyle("-fx-background-color: #FFFFFF; -fx-selection-bar: #E2E8F0;");
+        matchTable.setStyle(
+            "-fx-background-color: #FFFFFF; " +
+            "-fx-background-radius: 12px; " +
+            "-fx-border-color: #E2E8F0; " +
+            "-fx-border-radius: 12px; " +
+            "-fx-border-width: 1px; " +
+            "-fx-padding: 8px; " +
+            "-fx-control-inner-background: #FFFFFF; " +
+            "-fx-table-cell-border-color: #F1F5F9; " +
+            "-fx-table-header-border-color: transparent;"
+        );
 
         TableColumn<Match, String> matchUpCol = new TableColumn<>("Pertandingan");
         matchUpCol.setCellValueFactory(f -> {

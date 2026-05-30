@@ -38,54 +38,54 @@ public class PlayerDashboard extends BorderPane {
         this.onLogout = onLogout;
 
         this.setPrefSize(1000, 680);
-        this.setStyle("-fx-background-color: #F9FAFB;"); // Soft background color
+        this.setStyle("-fx-background-color: #F8FAFC;"); // Modern soft slate gray background
 
-        // 1. Sidebar Navigation (Left)
-        sidebar = new VBox(15);
-        sidebar.setPrefWidth(220);
-        sidebar.setPadding(new Insets(25, 15, 25, 15));
-        sidebar.setStyle("-fx-background-color: #F3F4F6; -fx-border-color: #E5E7EB; -fx-border-width: 0 1px 0 0;");
+        // 1. Sidebar Navigation (Left - Deep Slate Navy style)
+        sidebar = new VBox(20);
+        sidebar.setPrefWidth(240);
+        sidebar.setPadding(new Insets(30, 20, 30, 20));
+        sidebar.setStyle("-fx-background-color: #0F172A; -fx-border-color: #1E293B; -fx-border-width: 0 1px 0 0;");
 
         // Branding
         Label logoLabel = new Label("EsportHub");
-        logoLabel.setFont(Font.font("Outfit", FontWeight.BOLD, 22));
-        logoLabel.setTextFill(Color.web("#4F46E5")); // Indigo
+        logoLabel.setFont(Font.font("Outfit", FontWeight.BOLD, 24));
+        logoLabel.setStyle("-fx-text-fill: #FFFFFF; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 24px;");
 
-        Label roleLabel = new Label("Dashboard Player");
-        roleLabel.setFont(Font.font("Inter", FontWeight.SEMI_BOLD, 11));
-        roleLabel.setTextFill(Color.web("#6B7280"));
+        Label roleLabel = new Label("DASHBOARD PLAYER");
+        roleLabel.setFont(Font.font("Inter", FontWeight.BOLD, 10));
+        roleLabel.setStyle("-fx-text-fill: #6366F1; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 10px; -fx-letter-spacing: 1.5px;");
 
-        VBox brandBox = new VBox(2, logoLabel, roleLabel);
+        VBox brandBox = new VBox(4, logoLabel, roleLabel);
         brandBox.setPadding(new Insets(0, 0, 10, 0));
 
         // Separator
         Pane separator = new Pane();
         separator.setPrefHeight(1);
-        separator.setStyle("-fx-background-color: #E5E7EB;");
+        separator.setStyle("-fx-background-color: #1E293B;");
 
-        // Player Info Box in Sidebar
-        VBox playerInfoBox = new VBox(4);
+        // Player Info Box in Sidebar (Glassy dark card look)
+        VBox playerInfoBox = new VBox(8);
         playerInfoBox.setAlignment(Pos.CENTER);
-        playerInfoBox.setPadding(new Insets(15, 10, 15, 10));
-        playerInfoBox.setStyle("-fx-background-color: #FFFFFF; -fx-background-radius: 8px; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 8px;");
+        playerInfoBox.setPadding(new Insets(20, 15, 20, 15));
+        playerInfoBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.03); -fx-background-radius: 12px; -fx-border-color: rgba(255, 255, 255, 0.08); -fx-border-width: 1px; -fx-border-radius: 12px;");
         
-        // Circular Avatar Placeholder
+        // Circular Avatar with Gradient
         StackPane avatar = new StackPane();
-        avatar.setPrefSize(50, 50);
-        avatar.setMaxSize(50, 50);
-        avatar.setStyle("-fx-background-color: linear-gradient(to bottom right, #4F46E5, #818CF8); -fx-background-radius: 25px;");
+        avatar.setPrefSize(56, 56);
+        avatar.setMaxSize(56, 56);
+        avatar.setStyle("-fx-background-color: linear-gradient(to bottom right, #6366F1, #4F46E5); -fx-background-radius: 28px;");
         Label avatarLetter = new Label(player.getName().substring(0, 1).toUpperCase());
-        avatarLetter.setFont(Font.font("Outfit", FontWeight.BOLD, 20));
-        avatarLetter.setTextFill(Color.WHITE);
+        avatarLetter.setFont(Font.font("Outfit", FontWeight.BOLD, 22));
+        avatarLetter.setStyle("-fx-text-fill: #FFFFFF; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 22px;");
         avatar.getChildren().add(avatarLetter);
 
         sidebarPlayerName = new Label(player.getName());
         sidebarPlayerName.setFont(Font.font("Inter", FontWeight.BOLD, 14));
-        sidebarPlayerName.setTextFill(Color.web("#111827"));
+        sidebarPlayerName.setStyle("-fx-text-fill: #FFFFFF; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 14px;");
 
         sidebarPlayerRole = new Label(player.getRole());
-        sidebarPlayerRole.setFont(Font.font("Inter", 11));
-        sidebarPlayerRole.setTextFill(Color.web("#4F46E5"));
+        sidebarPlayerRole.setFont(Font.font("Inter", 12));
+        sidebarPlayerRole.setStyle("-fx-text-fill: #818CF8; -fx-font-family: 'Inter'; -fx-font-size: 12px;");
 
         playerInfoBox.getChildren().addAll(avatar, sidebarPlayerName, sidebarPlayerRole);
 
@@ -93,16 +93,16 @@ public class PlayerDashboard extends BorderPane {
         Button menuBtn = new Button("Profil & Statistik");
         menuBtn.setMaxWidth(Double.MAX_VALUE);
         menuBtn.setFont(Font.font("Inter", FontWeight.BOLD, 13));
-        menuBtn.setStyle("-fx-background-color: #E0E7FF; -fx-text-fill: #4F46E5; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;");
+        menuBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
 
         // Logout Button
         Button logoutBtn = new Button("Keluar Aplikasi");
         logoutBtn.setMaxWidth(Double.MAX_VALUE);
         logoutBtn.setFont(Font.font("Inter", FontWeight.BOLD, 13));
-        logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #EF4444; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;");
+        logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #F87171; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
         logoutBtn.setCursor(Cursor.HAND);
-        logoutBtn.setOnMouseEntered(e -> logoutBtn.setStyle("-fx-background-color: #FEE2E2; -fx-text-fill: #EF4444; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;"));
-        logoutBtn.setOnMouseExited(e -> logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #EF4444; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;"));
+        logoutBtn.setOnMouseEntered(e -> logoutBtn.setStyle("-fx-background-color: rgba(239, 68, 68, 0.1); -fx-text-fill: #F87171; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;"));
+        logoutBtn.setOnMouseExited(e -> logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #F87171; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;"));
         logoutBtn.setOnAction(e -> onLogout.run());
 
         Region spacer = new Region();
@@ -114,7 +114,7 @@ public class PlayerDashboard extends BorderPane {
         // 2. Scrollable Content Area (Center)
         contentScrollPane = new ScrollPane();
         contentScrollPane.setFitToWidth(true);
-        contentScrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent;");
+        contentScrollPane.setStyle("-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;");
         contentScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         contentScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         
@@ -125,27 +125,27 @@ public class PlayerDashboard extends BorderPane {
 
     private void setupContentWorkspace() {
         VBox workspace = new VBox(24);
-        workspace.setPadding(new Insets(24));
+        workspace.setPadding(new Insets(30));
         workspace.setStyle("-fx-background-color: transparent;");
 
         // Welcome banner/title
         Label welcomeTitle = new Label("Selamat Datang, " + player.getName() + "!");
         welcomeTitle.setFont(Font.font("Outfit", FontWeight.BOLD, 24));
-        welcomeTitle.setTextFill(Color.web("#111827"));
+        welcomeTitle.setStyle("-fx-text-fill: #0F172A; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 24px;");
         
         Label welcomeSubtitle = new Label("Kelola informasi profil kamu dan pantau performa pertandingan di sini.");
         welcomeSubtitle.setFont(Font.font("Inter", 13));
-        welcomeSubtitle.setTextFill(Color.web("#6B7280"));
+        welcomeSubtitle.setStyle("-fx-text-fill: #64748B; -fx-font-family: 'Inter'; -fx-font-size: 13px;");
 
-        VBox titleContainer = new VBox(4, welcomeTitle, welcomeSubtitle);
+        VBox titleContainer = new VBox(6, welcomeTitle, welcomeSubtitle);
 
         // 1. Stats Card (Rank, Winrate, KDA) - Spans horizontally
         statsCard = new StatsCard(player);
 
         // 2. Bottom Grid layout (Profile Form on left, Graph and Match History on right)
         GridPane grid = new GridPane();
-        grid.setHgap(20);
-        grid.setVgap(20);
+        grid.setHgap(24);
+        grid.setVgap(24);
 
         // Column Constraints
         ColumnConstraints col1 = new ColumnConstraints();
@@ -164,7 +164,7 @@ public class PlayerDashboard extends BorderPane {
         kdaChartCard = new KdaChartCard(player);
         matchHistoryCard = new MatchHistoryCard(player);
 
-        VBox rightSide = new VBox(20);
+        VBox rightSide = new VBox(24);
         rightSide.getChildren().addAll(kdaChartCard, matchHistoryCard);
 
         grid.add(profileCard, 0, 0);

@@ -25,30 +25,30 @@ public class AdminDashboard extends BorderPane {
 
     public AdminDashboard(Runnable onLogout) {
         this.setPrefSize(1000, 680);
-        this.setStyle("-fx-background-color: #FFFFFF;");
+        this.setStyle("-fx-background-color: #F8FAFC;");
 
-        // 1. Sidebar Navigation (Left)
-        sidebar = new VBox(15);
-        sidebar.setPrefWidth(220);
-        sidebar.setPadding(new Insets(25, 15, 25, 15));
-        sidebar.setStyle("-fx-background-color: #F3F4F6; -fx-border-color: #E5E7EB; -fx-border-width: 0 1px 0 0;");
+        // 1. Sidebar Navigation (Left - Deep Slate Navy style)
+        sidebar = new VBox(20);
+        sidebar.setPrefWidth(240);
+        sidebar.setPadding(new Insets(30, 20, 30, 20));
+        sidebar.setStyle("-fx-background-color: #0F172A; -fx-border-color: #1E293B; -fx-border-width: 0 1px 0 0;");
 
         // Title and branding
         Label logoLabel = new Label("EsportHub");
-        logoLabel.setFont(Font.font("Outfit", FontWeight.BOLD, 22));
-        logoLabel.setTextFill(Color.web("#4F46E5")); // Slate-Indigo theme primary
+        logoLabel.setFont(Font.font("Outfit", FontWeight.BOLD, 24));
+        logoLabel.setStyle("-fx-text-fill: #FFFFFF; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 24px;");
 
-        Label roleLabel = new Label("Dashboard Admin");
-        roleLabel.setFont(Font.font("Inter", FontWeight.SEMI_BOLD, 12));
-        roleLabel.setTextFill(Color.web("#6B7280"));
+        Label roleLabel = new Label("DASHBOARD ADMIN");
+        roleLabel.setFont(Font.font("Inter", FontWeight.BOLD, 10));
+        roleLabel.setStyle("-fx-text-fill: #6366F1; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 10px; -fx-letter-spacing: 1.5px;");
 
-        VBox brandBox = new VBox(2, logoLabel, roleLabel);
-        brandBox.setPadding(new Insets(0, 0, 15, 0));
+        VBox brandBox = new VBox(4, logoLabel, roleLabel);
+        brandBox.setPadding(new Insets(0, 0, 10, 0));
 
         // Horizontal separator line
         Pane separator = new Pane();
         separator.setPrefHeight(1);
-        separator.setStyle("-fx-background-color: #E5E7EB;");
+        separator.setStyle("-fx-background-color: #1E293B;");
 
         // Nav Buttons
         scheduleNavBtn = new Button("Jadwal Tanding");
@@ -65,15 +65,17 @@ public class AdminDashboard extends BorderPane {
 
         logoutBtn = new Button("Logout");
         setupNavButton(logoutBtn);
-        logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #EF4444; -fx-font-weight: bold; -fx-alignment: center-left; -fx-padding: 10px 15px;");
+        logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #F87171; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
         logoutBtn.setOnAction(e -> onLogout.run());
+        logoutBtn.setOnMouseEntered(e -> logoutBtn.setStyle("-fx-background-color: rgba(239, 68, 68, 0.1); -fx-text-fill: #F87171; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;"));
+        logoutBtn.setOnMouseExited(e -> logoutBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #F87171; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;"));
 
         sidebar.getChildren().addAll(brandBox, separator, scheduleNavBtn, teamPlayerNavBtn, spacer, logoutBtn);
         this.setLeft(sidebar);
 
         // 2. Content Workspace (Center)
         contentArea = new StackPane();
-        contentArea.setStyle("-fx-background-color: #FFFFFF;");
+        contentArea.setStyle("-fx-background-color: #F8FAFC; -fx-padding: 0;");
         this.setCenter(contentArea);
 
         // Show schedule tab by default
@@ -100,8 +102,8 @@ public class AdminDashboard extends BorderPane {
     }
 
     private void setActiveNav(Button activeBtn) {
-        String activeStyle = "-fx-background-color: #E0E7FF; -fx-text-fill: #4F46E5; -fx-font-weight: bold; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;";
-        String inactiveStyle = "-fx-background-color: transparent; -fx-text-fill: #4B5563; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;";
+        String activeStyle = "-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-font-weight: bold; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px;";
+        String inactiveStyle = "-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px;";
 
         scheduleNavBtn.setStyle(scheduleNavBtn == activeBtn ? activeStyle : inactiveStyle);
         teamPlayerNavBtn.setStyle(teamPlayerNavBtn == activeBtn ? activeStyle : inactiveStyle);
@@ -113,18 +115,19 @@ public class AdminDashboard extends BorderPane {
         btn.setCursor(Cursor.HAND);
         
         // Inactive styling by default
-        btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #4B5563; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;");
+        btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px;");
 
         // Hover highlight
         btn.setOnMouseEntered(e -> {
-            if (!btn.getStyle().contains("#E0E7FF")) {
-                btn.setStyle("-fx-background-color: #F3F4F6; -fx-text-fill: #1F2937; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;");
+            if (!btn.getStyle().contains("#312E81")) {
+                btn.setStyle("-fx-background-color: #1E293B; -fx-text-fill: #F1F5F9; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px;");
             }
         });
         btn.setOnMouseExited(e -> {
-            if (!btn.getStyle().contains("#E0E7FF")) {
-                btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #4B5563; -fx-alignment: center-left; -fx-padding: 10px 15px; -fx-background-radius: 6px;");
+            if (!btn.getStyle().contains("#312E81")) {
+                btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px;");
             }
         });
     }
 }
+

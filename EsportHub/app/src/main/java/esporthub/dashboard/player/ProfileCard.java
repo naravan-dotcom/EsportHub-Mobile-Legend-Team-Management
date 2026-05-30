@@ -27,28 +27,29 @@ public class ProfileCard extends VBox {
         this.onProfileUpdated = onProfileUpdated;
 
         this.setPadding(new Insets(24));
-        this.setSpacing(16);
+        this.setSpacing(18);
         this.setStyle("-fx-background-color: #FFFFFF; " +
-                      "-fx-background-radius: 12px; " +
-                      "-fx-border-color: #F3F4F6; " +
+                      "-fx-background-radius: 16px; " +
+                      "-fx-border-color: #E2E8F0; " +
                       "-fx-border-width: 1px; " +
-                      "-fx-border-radius: 12px; " +
-                      "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 4);");
+                      "-fx-border-radius: 16px; " +
+                      "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 15, 0, 0, 8);");
 
         // Title
         Label titleLabel = new Label("Edit Profil");
         titleLabel.setFont(Font.font("Outfit", FontWeight.BOLD, 18));
-        titleLabel.setTextFill(Color.web("#111827"));
+        titleLabel.setStyle("-fx-text-fill: #0F172A; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 18px;");
 
         // Form elements
-        VBox form = new VBox(14);
+        VBox form = new VBox(16);
         
         // ID (Read-only)
         idLabel = new Label(player.getId());
-        idLabel.setFont(Font.font("Inter", FontWeight.SEMI_BOLD, 14));
-        idLabel.setTextFill(Color.web("#4B5563"));
+        idLabel.setFont(Font.font("Inter", FontWeight.SEMI_BOLD, 13));
+        idLabel.setStyle("-fx-text-fill: #475569; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 13px;");
+        
         VBox idBox = createFieldContainer("Player ID (Read-only)", idLabel);
-        idBox.setStyle("-fx-background-color: #F9FAFB; -fx-padding: 8px 12px; -fx-background-radius: 8px; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 8px;");
+        idBox.setStyle("-fx-background-color: #F8FAFC; -fx-padding: 10px 14px; -fx-background-radius: 8px; -fx-border-color: #E2E8F0; -fx-border-width: 1px; -fx-border-radius: 8px;");
 
         // Username (Editable)
         usernameField = new TextField(player.getName());
@@ -75,11 +76,11 @@ public class ProfileCard extends VBox {
         saveBtn.setMaxWidth(Double.MAX_VALUE);
         saveBtn.setCursor(Cursor.HAND);
         saveBtn.setFont(Font.font("Inter", FontWeight.BOLD, 14));
-        saveBtn.setStyle("-fx-background-color: linear-gradient(to right, #4F46E5, #6366F1); -fx-text-fill: #FFFFFF; -fx-background-radius: 8px; -fx-padding: 10px 16px;");
+        saveBtn.setStyle("-fx-background-color: linear-gradient(to right, #4F46E5, #6366F1); -fx-text-fill: #FFFFFF; -fx-background-radius: 8px; -fx-padding: 12px 16px; -fx-font-weight: bold; -fx-font-size: 14px;");
         
         // Hover effects
-        saveBtn.setOnMouseEntered(e -> saveBtn.setStyle("-fx-background-color: linear-gradient(to right, #4338CA, #4F46E5); -fx-text-fill: #FFFFFF; -fx-background-radius: 8px; -fx-padding: 10px 16px;"));
-        saveBtn.setOnMouseExited(e -> saveBtn.setStyle("-fx-background-color: linear-gradient(to right, #4F46E5, #6366F1); -fx-text-fill: #FFFFFF; -fx-background-radius: 8px; -fx-padding: 10px 16px;"));
+        saveBtn.setOnMouseEntered(e -> saveBtn.setStyle("-fx-background-color: linear-gradient(to right, #4338CA, #4F46E5); -fx-text-fill: #FFFFFF; -fx-background-radius: 8px; -fx-padding: 12px 16px; -fx-font-weight: bold; -fx-font-size: 14px;"));
+        saveBtn.setOnMouseExited(e -> saveBtn.setStyle("-fx-background-color: linear-gradient(to right, #4F46E5, #6366F1); -fx-text-fill: #FFFFFF; -fx-background-radius: 8px; -fx-padding: 12px 16px; -fx-font-weight: bold; -fx-font-size: 14px;"));
         
         saveBtn.setOnAction(e -> handleSave());
 
@@ -89,25 +90,25 @@ public class ProfileCard extends VBox {
     private VBox createFieldContainer(String labelText, javafx.scene.Node field) {
         Label label = new Label(labelText);
         label.setFont(Font.font("Inter", FontWeight.SEMI_BOLD, 12));
-        label.setTextFill(Color.web("#4B5563"));
+        label.setStyle("-fx-text-fill: #475569; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px;");
         VBox container = new VBox(6, label, field);
         return container;
     }
 
     private void setupFieldStyle(TextField field, String prompt) {
         field.setPromptText(prompt);
-        field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 12px; -fx-font-size: 13px; -fx-text-fill: #111827;");
+        field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #CBD5E1; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px; -fx-font-size: 13px; -fx-text-fill: #0F172A; -fx-font-family: 'Inter';");
         field.focusedProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) {
-                field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #4F46E5; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 12px; -fx-font-size: 13px; -fx-text-fill: #111827;");
+                field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #4F46E5; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px; -fx-font-size: 13px; -fx-text-fill: #0F172A; -fx-font-family: 'Inter';");
             } else {
-                field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 12px; -fx-font-size: 13px; -fx-text-fill: #111827;");
+                field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #CBD5E1; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px; -fx-font-size: 13px; -fx-text-fill: #0F172A; -fx-font-family: 'Inter';");
             }
         });
     }
 
     private void setupComboStyle(ComboBox<?> combo) {
-        combo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 4px 8px; -fx-font-size: 13px;");
+        combo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #CBD5E1; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 6px 10px; -fx-font-size: 13px; -fx-font-family: 'Inter';");
     }
 
     private void handleSave() {

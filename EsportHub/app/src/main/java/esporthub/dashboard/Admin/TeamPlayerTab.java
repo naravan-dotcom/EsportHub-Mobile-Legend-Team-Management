@@ -20,21 +20,21 @@ public class TeamPlayerTab extends HBox {
     private TeamPlayerFormCard formCard;
 
     public TeamPlayerTab() {
-        this.setPadding(new Insets(20));
-        this.setSpacing(20);
-        this.setStyle("-fx-background-color: #FFFFFF;");
+        this.setPadding(new Insets(30));
+        this.setSpacing(24);
+        this.setStyle("-fx-background-color: transparent;");
 
         // 1. Left Panel (Tables inside a TabPane)
-        VBox leftPane = new VBox(15);
+        VBox leftPane = new VBox(20);
         HBox.setHgrow(leftPane, Priority.ALWAYS);
-        leftPane.setStyle("-fx-background-color: #FFFFFF;");
+        leftPane.setStyle("-fx-background-color: transparent;");
 
         Label sectionTitle = new Label("Database Tim & Pemain");
-        sectionTitle.setFont(Font.font("Inter", FontWeight.BOLD, 18));
-        sectionTitle.setTextFill(Color.web("#1F2937"));
+        sectionTitle.setFont(Font.font("Outfit", FontWeight.BOLD, 22));
+        sectionTitle.setStyle("-fx-text-fill: #0F172A; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 22px;");
 
         TabPane tabPane = new TabPane();
-        tabPane.setStyle("-fx-background-color: #FFFFFF; -fx-tab-max-width: 150px;");
+        tabPane.setStyle("-fx-background-color: transparent; -fx-tab-max-width: 150px; -fx-tab-min-height: 36px;");
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         Tab teamTab = new Tab("Daftar Tim");
@@ -48,12 +48,11 @@ public class TeamPlayerTab extends HBox {
         tabPane.getTabs().addAll(teamTab, playerTab);
         leftPane.getChildren().addAll(sectionTitle, tabPane);
 
-        // 2. Right Panel (Modular Cards)
-        VBox rightPane = new VBox(20);
+        // 2. Right Panel (Modular Cards Container)
+        VBox rightPane = new VBox(24);
         rightPane.setPrefWidth(380);
         rightPane.setMinWidth(380);
-        rightPane.setPadding(new Insets(15));
-        rightPane.setStyle("-fx-background-color: #F9FAFB; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 8px; -fx-background-radius: 8px;");
+        rightPane.setStyle("-fx-background-color: transparent;");
 
         // Use method references to avoid capturing uninitialized finals in lambdas
         detailsCard = new TeamPlayerDetailsCard(this::handleEditRequest, this::refreshTables);
@@ -104,7 +103,17 @@ public class TeamPlayerTab extends HBox {
         teamTable = new TableView<>();
         teamTable.setItems(dataStore.getTeams());
         teamTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        teamTable.setStyle("-fx-background-color: #FFFFFF; -fx-selection-bar: #E2E8F0;");
+        teamTable.setStyle(
+            "-fx-background-color: #FFFFFF; " +
+            "-fx-background-radius: 12px; " +
+            "-fx-border-color: #E2E8F0; " +
+            "-fx-border-radius: 12px; " +
+            "-fx-border-width: 1px; " +
+            "-fx-padding: 8px; " +
+            "-fx-control-inner-background: #FFFFFF; " +
+            "-fx-table-cell-border-color: #F1F5F9; " +
+            "-fx-table-header-border-color: transparent;"
+        );
 
         TableColumn<Team, String> nameCol = new TableColumn<>("Nama Tim");
         nameCol.setCellValueFactory(f -> f.getValue().nameProperty());
@@ -136,7 +145,17 @@ public class TeamPlayerTab extends HBox {
         playerTable = new TableView<>();
         playerTable.setItems(dataStore.getPlayers());
         playerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        playerTable.setStyle("-fx-background-color: #FFFFFF; -fx-selection-bar: #E2E8F0;");
+        playerTable.setStyle(
+            "-fx-background-color: #FFFFFF; " +
+            "-fx-background-radius: 12px; " +
+            "-fx-border-color: #E2E8F0; " +
+            "-fx-border-radius: 12px; " +
+            "-fx-border-width: 1px; " +
+            "-fx-padding: 8px; " +
+            "-fx-control-inner-background: #FFFFFF; " +
+            "-fx-table-cell-border-color: #F1F5F9; " +
+            "-fx-table-header-border-color: transparent;"
+        );
 
         TableColumn<Player, String> nameCol = new TableColumn<>("Nama Pemain");
         nameCol.setCellValueFactory(f -> f.getValue().nameProperty());

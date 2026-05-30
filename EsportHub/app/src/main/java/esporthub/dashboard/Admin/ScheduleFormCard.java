@@ -27,13 +27,18 @@ public class ScheduleFormCard extends VBox {
     public ScheduleFormCard(Runnable onMatchScheduled) {
         this.onMatchScheduled = onMatchScheduled;
 
-        this.setPadding(new Insets(15));
-        this.setSpacing(12);
-        this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;");
+        this.setPadding(new Insets(24));
+        this.setSpacing(16);
+        this.setStyle("-fx-background-color: #FFFFFF; " +
+                      "-fx-border-color: #E2E8F0; " +
+                      "-fx-border-width: 1px; " +
+                      "-fx-border-radius: 16px; " +
+                      "-fx-background-radius: 16px; " +
+                      "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 15, 0, 0, 8);");
 
         Label schedTitle = new Label("Jadwalkan Pertandingan");
-        schedTitle.setFont(Font.font("Inter", FontWeight.BOLD, 14));
-        schedTitle.setTextFill(Color.web("#1F2937"));
+        schedTitle.setFont(Font.font("Outfit", FontWeight.BOLD, 15));
+        schedTitle.setStyle("-fx-text-fill: #0F172A; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 15px;");
 
         team1Combo = new ComboBox<>();
         team1Combo.setPromptText("Pilih Tim 1");
@@ -54,7 +59,7 @@ public class ScheduleFormCard extends VBox {
 
         scheduleBtn = new Button("Jadwalkan Pertandingan");
         scheduleBtn.setMaxWidth(Double.MAX_VALUE);
-        setupButtonStyle(scheduleBtn, "#5A67D8");
+        setupButtonStyle(scheduleBtn, "#4F46E5", "#4338CA");
         scheduleBtn.setOnAction(e -> handleScheduleMatch());
 
         this.getChildren().addAll(schedTitle, team1Combo, team2Combo, dateTimeField, scheduleBtn);
@@ -109,15 +114,24 @@ public class ScheduleFormCard extends VBox {
     }
 
     private void setupFieldStyle(TextField field) {
-        field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-padding: 8px 12px; -fx-font-size: 13px;");
+        field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #CBD5E1; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px; -fx-font-size: 13px; -fx-text-fill: #0F172A; -fx-font-family: 'Inter';");
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #4F46E5; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px; -fx-font-size: 13px; -fx-text-fill: #0F172A; -fx-font-family: 'Inter';");
+            } else {
+                field.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #CBD5E1; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 10px 14px; -fx-font-size: 13px; -fx-text-fill: #0F172A; -fx-font-family: 'Inter';");
+            }
+        });
     }
 
     private void setupComboStyle(ComboBox<?> combo) {
-        combo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-radius: 6px; -fx-background-radius: 6px; -fx-font-size: 13px;");
+        combo.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #CBD5E1; -fx-border-radius: 8px; -fx-background-radius: 8px; -fx-padding: 6px 10px; -fx-font-size: 13px; -fx-font-family: 'Inter';");
     }
 
-    private void setupButtonStyle(Button btn, String hexColor) {
-        btn.setStyle("-fx-background-color: " + hexColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 8px 16px;");
+    private void setupButtonStyle(Button btn, String hexColor, String hoverColor) {
+        btn.setStyle("-fx-background-color: " + hexColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px;");
         btn.setCursor(Cursor.HAND);
+        btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: " + hoverColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px;"));
+        btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: " + hexColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px;"));
     }
 }

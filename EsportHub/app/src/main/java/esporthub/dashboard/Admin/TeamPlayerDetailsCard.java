@@ -31,25 +31,30 @@ public class TeamPlayerDetailsCard extends VBox {
         this.onEditRequest = onEditRequest;
         this.onDataChanged = onDataChanged;
 
-        this.setPadding(new Insets(15));
-        this.setSpacing(12);
-        this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color: #E5E7EB; -fx-border-width: 1px; -fx-border-radius: 6px; -fx-background-radius: 6px;");
+        this.setPadding(new Insets(24));
+        this.setSpacing(16);
+        this.setStyle("-fx-background-color: #FFFFFF; " +
+                      "-fx-border-color: #E2E8F0; " +
+                      "-fx-border-width: 1px; " +
+                      "-fx-border-radius: 16px; " +
+                      "-fx-background-radius: 16px; " +
+                      "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 15, 0, 0, 8);");
 
         detailTitle = new Label("Pilih Tim atau Pemain");
-        detailTitle.setFont(Font.font("Inter", FontWeight.BOLD, 15));
-        detailTitle.setTextFill(Color.web("#1F2937"));
+        detailTitle.setFont(Font.font("Outfit", FontWeight.BOLD, 18));
+        detailTitle.setStyle("-fx-text-fill: #0F172A; -fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 18px;");
 
         detailLine1 = new Label("Pilih entri di tabel untuk melihat detail info");
         detailLine1.setFont(Font.font("Inter", 13));
-        detailLine1.setTextFill(Color.web("#4B5563"));
+        detailLine1.setStyle("-fx-text-fill: #64748B; -fx-font-family: 'Inter'; -fx-font-size: 13px;");
 
         detailLine2 = new Label();
         detailLine2.setFont(Font.font("Inter", 13));
-        detailLine2.setTextFill(Color.web("#4B5563"));
+        detailLine2.setStyle("-fx-text-fill: #64748B; -fx-font-family: 'Inter'; -fx-font-size: 13px;");
 
         detailLine3 = new Label();
         detailLine3.setFont(Font.font("Inter", 13));
-        detailLine3.setTextFill(Color.web("#4B5563"));
+        detailLine3.setStyle("-fx-text-fill: #64748B; -fx-font-family: 'Inter'; -fx-font-size: 13px;");
 
         detailStatus = new Label();
         detailStatus.setFont(Font.font("Inter", FontWeight.BOLD, 12));
@@ -69,20 +74,20 @@ public class TeamPlayerDetailsCard extends VBox {
 
         if (team.isBanned()) {
             detailStatus.setText("STATUS: BANNED");
-            detailStatus.setTextFill(Color.web("#EF4444"));
+            detailStatus.setStyle("-fx-text-fill: #EF4444; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px; -fx-background-color: #FEE2E2; -fx-padding: 4px 10px; -fx-background-radius: 99px; -fx-alignment: center;");
         } else {
             detailStatus.setText("STATUS: AKTIF");
-            detailStatus.setTextFill(Color.web("#10B981"));
+            detailStatus.setStyle("-fx-text-fill: #10B981; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px; -fx-background-color: #D1FAE5; -fx-padding: 4px 10px; -fx-background-radius: 99px; -fx-alignment: center;");
         }
 
         actionsBox.getChildren().clear();
 
         Button editBtn = new Button("Edit Tim");
-        setupButtonStyle(editBtn, "#5A67D8");
+        setupButtonStyle(editBtn, "#4F46E5", "#4338CA");
         editBtn.setOnAction(e -> onEditRequest.accept(team));
 
         Button banBtn = new Button(team.isBanned() ? "Lepas Ban" : "Ban Tim");
-        setupButtonStyle(banBtn, team.isBanned() ? "#10B981" : "#EF4444");
+        setupButtonStyle(banBtn, team.isBanned() ? "#10B981" : "#EF4444", team.isBanned() ? "#059669" : "#DC2626");
         banBtn.setOnAction(e -> {
             team.setBanned(!team.isBanned());
             // Sync players under this team as well
@@ -96,7 +101,7 @@ public class TeamPlayerDetailsCard extends VBox {
         });
 
         Button deleteBtn = new Button("Hapus Tim");
-        setupButtonStyle(deleteBtn, "#4B5563");
+        setupButtonStyle(deleteBtn, "#64748B", "#475569");
         deleteBtn.setOnAction(e -> {
             dataStore.removeTeam(team);
             clearDetails();
@@ -115,20 +120,20 @@ public class TeamPlayerDetailsCard extends VBox {
 
         if (player.isBanned()) {
             detailStatus.setText("STATUS: BANNED");
-            detailStatus.setTextFill(Color.web("#EF4444"));
+            detailStatus.setStyle("-fx-text-fill: #EF4444; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px; -fx-background-color: #FEE2E2; -fx-padding: 4px 10px; -fx-background-radius: 99px; -fx-alignment: center;");
         } else {
             detailStatus.setText("STATUS: AKTIF");
-            detailStatus.setTextFill(Color.web("#10B981"));
+            detailStatus.setStyle("-fx-text-fill: #10B981; -fx-font-family: 'Inter'; -fx-font-weight: bold; -fx-font-size: 12px; -fx-background-color: #D1FAE5; -fx-padding: 4px 10px; -fx-background-radius: 99px; -fx-alignment: center;");
         }
 
         actionsBox.getChildren().clear();
 
         Button editBtn = new Button("Edit Pemain");
-        setupButtonStyle(editBtn, "#5A67D8");
+        setupButtonStyle(editBtn, "#4F46E5", "#4338CA");
         editBtn.setOnAction(e -> onEditRequest.accept(player));
 
         Button banBtn = new Button(player.isBanned() ? "Lepas Ban" : "Ban Pemain");
-        setupButtonStyle(banBtn, player.isBanned() ? "#10B981" : "#EF4444");
+        setupButtonStyle(banBtn, player.isBanned() ? "#10B981" : "#EF4444", player.isBanned() ? "#059669" : "#DC2626");
         banBtn.setOnAction(e -> {
             player.setBanned(!player.isBanned());
             showPlayerDetails(player);
@@ -136,7 +141,7 @@ public class TeamPlayerDetailsCard extends VBox {
         });
 
         Button deleteBtn = new Button("Hapus Pemain");
-        setupButtonStyle(deleteBtn, "#4B5563");
+        setupButtonStyle(deleteBtn, "#64748B", "#475569");
         deleteBtn.setOnAction(e -> {
             dataStore.removePlayer(player);
             clearDetails();
@@ -153,11 +158,14 @@ public class TeamPlayerDetailsCard extends VBox {
         detailLine2.setText("");
         detailLine3.setText("");
         detailStatus.setText("");
+        detailStatus.setStyle("");
         actionsBox.getChildren().clear();
     }
 
-    private void setupButtonStyle(Button btn, String hexColor) {
-        btn.setStyle("-fx-background-color: " + hexColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 6px; -fx-padding: 8px 16px;");
+    private void setupButtonStyle(Button btn, String hexColor, String hoverColor) {
+        btn.setStyle("-fx-background-color: " + hexColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px;");
         btn.setCursor(Cursor.HAND);
+        btn.setOnMouseEntered(e -> btn.setStyle("-fx-background-color: " + hoverColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px;"));
+        btn.setOnMouseExited(e -> btn.setStyle("-fx-background-color: " + hexColor + "; -fx-text-fill: #FFFFFF; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8px; -fx-padding: 10px 16px;"));
     }
 }
