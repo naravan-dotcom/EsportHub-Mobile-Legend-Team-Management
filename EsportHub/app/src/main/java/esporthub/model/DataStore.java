@@ -1,5 +1,6 @@
 package esporthub.model;
 
+import esporthub.dashboard.player.team.TrainingSchedule;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -16,13 +17,18 @@ public class DataStore {
     private final ObservableList<Team> teams = FXCollections.observableArrayList();
     private final ObservableList<Player> players = FXCollections.observableArrayList();
     private final ObservableList<Match> matches = FXCollections.observableArrayList();
+    private final ObservableList<TrainingSchedule> trainingSchedules = FXCollections.observableArrayList();
 
     private DataStore() {
         // Initialize mock teams
         Team rrq = new Team("T1", "RRQ Hoshi", 4, 2, false);
+        rrq.setCaptainName("Sutsujin");
         Team onic = new Team("T2", "ONIC Esports", 5, 1, false);
+        onic.setCaptainName("Kairi");
         Team evos = new Team("T3", "EVOS Glory", 2, 4, false);
+        evos.setCaptainName("Anavel");
         Team ae = new Team("T4", "Alter Ego", 3, 3, false);
+        ae.setCaptainName("Tazz");
 
         teams.addAll(rrq, onic, evos, ae);
 
@@ -65,6 +71,12 @@ public class DataStore {
         m3.setScore2(1);
         m3.setWinner("RRQ Hoshi");
         matches.add(m3);
+
+        // Initialize mock training schedules
+        trainingSchedules.add(new TrainingSchedule("S1", "RRQ Hoshi", "Latihan Draft & Scrim", "2026-06-01 19:00", "Fokus hero pool baru & counters"));
+        trainingSchedules.add(new TrainingSchedule("S2", "RRQ Hoshi", "Evaluasi Game & Replay", "2026-06-03 15:00", "Review kekalahan scrim terakhir"));
+        trainingSchedules.add(new TrainingSchedule("S3", "ONIC Esports", "Latihan Mikro & Mekanik", "2026-06-02 20:00", "Mengasah kombinasi skill assassin"));
+        trainingSchedules.add(new TrainingSchedule("S4", "EVOS Glory", "Scrim Lintas Tim", "2026-06-02 19:00", "Latihan komunikasi teamfight"));
     }
 
     public ObservableList<Team> getTeams() { return teams; }
@@ -87,4 +99,8 @@ public class DataStore {
 
     public void addMatch(Match match) { matches.add(match); }
     public void removeMatch(Match match) { matches.remove(match); }
+
+    public ObservableList<TrainingSchedule> getTrainingSchedules() { return trainingSchedules; }
+    public void addTrainingSchedule(TrainingSchedule schedule) { trainingSchedules.add(schedule); }
+    public void removeTrainingSchedule(TrainingSchedule schedule) { trainingSchedules.remove(schedule); }
 }

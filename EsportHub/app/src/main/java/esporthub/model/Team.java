@@ -8,6 +8,7 @@ public class Team {
     private final IntegerProperty wins;
     private final IntegerProperty losses;
     private final BooleanProperty banned;
+    private final StringProperty captainName;
 
     public Team(String id, String name, int wins, int losses, boolean banned) {
         this.id = new SimpleStringProperty(id);
@@ -15,6 +16,7 @@ public class Team {
         this.wins = new SimpleIntegerProperty(wins);
         this.losses = new SimpleIntegerProperty(losses);
         this.banned = new SimpleBooleanProperty(banned);
+        this.captainName = new SimpleStringProperty("");
     }
 
     public String getId() { return id.get(); }
@@ -36,6 +38,10 @@ public class Team {
     public boolean isBanned() { return banned.get(); }
     public void setBanned(boolean value) { banned.set(value); }
     public BooleanProperty bannedProperty() { return banned; }
+
+    public String getCaptainName() { return captainName.get(); }
+    public void setCaptainName(String value) { captainName.set(value); }
+    public StringProperty captainNameProperty() { return captainName; }
 
     @Override
     public String toString() {

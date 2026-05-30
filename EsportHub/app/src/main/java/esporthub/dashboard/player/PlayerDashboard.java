@@ -2,6 +2,7 @@ package esporthub.dashboard.player;
 
 import esporthub.login.AuthManager;
 import esporthub.model.Player;
+import esporthub.dashboard.player.team.TeamRoomTab;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -31,6 +32,11 @@ public class PlayerDashboard extends BorderPane {
     // Sidebar Header Info
     private Label sidebarPlayerName;
     private Label sidebarPlayerRole;
+
+    // Navigation and Custom Tabs
+    private Button menuBtn;
+    private Button teamRoomBtn;
+    private TeamRoomTab teamRoomTab;
 
     public PlayerDashboard(Player player, AuthManager authManager, Runnable onLogout) {
         this.player = player;
@@ -89,11 +95,49 @@ public class PlayerDashboard extends BorderPane {
 
         playerInfoBox.getChildren().addAll(avatar, sidebarPlayerName, sidebarPlayerRole);
 
-        // Sidebar Navigation Button
-        Button menuBtn = new Button("Profil & Statistik");
+        // Sidebar Navigation Button - Profil & Statistik
+        menuBtn = new Button("Profil & Statistik");
         menuBtn.setMaxWidth(Double.MAX_VALUE);
         menuBtn.setFont(Font.font("Inter", FontWeight.BOLD, 13));
         menuBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+        menuBtn.setCursor(Cursor.HAND);
+        menuBtn.setOnMouseEntered(e -> {
+            if (teamRoomTab == null || !contentScrollPane.getContent().equals(teamRoomTab)) {
+                menuBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            } else {
+                menuBtn.setStyle("-fx-background-color: rgba(255, 255, 255, 0.05); -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            }
+        });
+        menuBtn.setOnMouseExited(e -> {
+            if (teamRoomTab != null && contentScrollPane.getContent().equals(teamRoomTab)) {
+                menuBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            } else {
+                menuBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            }
+        });
+        menuBtn.setOnAction(e -> showProfileAndStatsTab());
+
+        // Sidebar Navigation Button - Ruang Tim
+        teamRoomBtn = new Button("Ruang Tim");
+        teamRoomBtn.setMaxWidth(Double.MAX_VALUE);
+        teamRoomBtn.setFont(Font.font("Inter", FontWeight.BOLD, 13));
+        teamRoomBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+        teamRoomBtn.setCursor(Cursor.HAND);
+        teamRoomBtn.setOnMouseEntered(e -> {
+            if (teamRoomTab != null && contentScrollPane.getContent().equals(teamRoomTab)) {
+                teamRoomBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            } else {
+                teamRoomBtn.setStyle("-fx-background-color: rgba(255, 255, 255, 0.05); -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            }
+        });
+        teamRoomBtn.setOnMouseExited(e -> {
+            if (teamRoomTab != null && contentScrollPane.getContent().equals(teamRoomTab)) {
+                teamRoomBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            } else {
+                teamRoomBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+            }
+        });
+        teamRoomBtn.setOnAction(e -> showTeamRoomTab());
 
         // Logout Button
         Button logoutBtn = new Button("Keluar Aplikasi");
@@ -108,7 +152,7 @@ public class PlayerDashboard extends BorderPane {
         Region spacer = new Region();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        sidebar.getChildren().addAll(brandBox, separator, playerInfoBox, menuBtn, spacer, logoutBtn);
+        sidebar.getChildren().addAll(brandBox, separator, playerInfoBox, menuBtn, teamRoomBtn, spacer, logoutBtn);
         this.setLeft(sidebar);
 
         // 2. Scrollable Content Area (Center)
@@ -172,6 +216,33 @@ public class PlayerDashboard extends BorderPane {
 
         workspace.getChildren().addAll(titleContainer, statsCard, grid);
         contentScrollPane.setContent(workspace);
+    }
+
+    private void showProfileAndStatsTab() {
+        // Toggle selected styles
+        menuBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+        teamRoomBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+        
+        setupContentWorkspace();
+    }
+
+    private void showTeamRoomTab() {
+        // Toggle selected styles
+        menuBtn.setStyle("-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+        teamRoomBtn.setStyle("-fx-background-color: #312E81; -fx-text-fill: #E0E7FF; -fx-alignment: center-left; -fx-padding: 12px 18px; -fx-background-radius: 8px; -fx-font-weight: bold;");
+        
+        if (teamRoomTab == null) {
+            teamRoomTab = new TeamRoomTab(player, () -> {
+                // Refresh player status and sync back to sidebar
+                sidebarPlayerName.setText(player.getName());
+                sidebarPlayerRole.setText(player.getRole());
+                statsCard.refresh();
+            });
+        } else {
+            teamRoomTab.setupContent();
+        }
+        
+        contentScrollPane.setContent(teamRoomTab);
     }
 
     private void refreshProfileViews() {

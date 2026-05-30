@@ -1,7 +1,7 @@
 package esporthub.dashboard.player;
 
 import esporthub.login.AuthManager;
-import esporthub.model.Player;
+import esporthub.model.*;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -129,6 +129,13 @@ public class ProfileCard extends VBox {
             if (!success) {
                 showAlert("Error", "Username sudah digunakan atau tidak valid!", Alert.AlertType.ERROR);
                 return;
+            }
+        }
+
+        // Update team captain name if this player is the captain
+        for (Team t : DataStore.getInstance().getTeams()) {
+            if (t.getCaptainName().equalsIgnoreCase(oldName)) {
+                t.setCaptainName(newName);
             }
         }
 
